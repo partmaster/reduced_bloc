@@ -27,7 +27,7 @@ void main() {
   blocTest(
     'emits [1] when Incrementer is added',
     build: () => ReducibleBloc(0),
-    act: (bloc) => bloc.reduce(Incrementer()),
+    act: (Reducible<int> bloc) => bloc.reduce(Incrementer()),
     expect: () => [1],
   );
 

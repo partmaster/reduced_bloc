@@ -150,10 +150,12 @@ packages:
   reduced:
     dependency: "direct main"
     description:
-      path: "../../reduced"
-      relative: true
-    source: path
-    version: "0.0.1"
+      path: "."
+      ref: main
+      resolved-ref: "8a9614d15a53f292094beb3248fd56130268c90a"
+      url: "https://github.com/partmaster/reduced.git"
+    source: git
+    version: "0.1.0"
   reduced_bloc:
     dependency: "direct main"
     description:

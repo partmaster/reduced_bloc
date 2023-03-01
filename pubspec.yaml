@@ -11,14 +11,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  reduced:
-    path: ../reduced/
-  bloc: ^8.1.1
   flutter_bloc: ^8.1.2
+  reduced:
+    git:
+      url: https://github.com/partmaster/reduced.git
+      ref: main
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   bloc_test: ^9.1.1
-
