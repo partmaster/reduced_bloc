@@ -21,7 +21,7 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
     required ReducedWidgetBuilder<P> builder,
   }) =>
       BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => transformer(reducible),
+        selector: (state) => transformer(this),
         builder: (context, props) => builder(props: props),
       );
 }
