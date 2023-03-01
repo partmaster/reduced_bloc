@@ -2,5 +2,5 @@
 
 library reduced_bloc;
 
-export 'bloc_reducible.dart';
-export 'bloc_wrapper.dart';
+export 'src/bloc_reducible.dart';
+export 'src/bloc_wrapper.dart';
