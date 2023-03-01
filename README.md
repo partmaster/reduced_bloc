@@ -1,3 +1,7 @@
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/partmaster/reduced_bloc/dart.yml)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/partmaster/reduced_bloc)
+![GitHub last commit](https://img.shields.io/github/last-commit/partmaster/reduced_bloc)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/partmaster/reduced_bloc)
 # reduced_bloc
 
 Implementation of the 'reduced' API für the 'Bloc' state management framework with following features:
@@ -56,7 +60,7 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
 
 ## Getting started
 
-In the pubspec.yaml add dependencies on the package 'reduced' and on the package of an implementation of the 'reduced' API for a state management framework, e.g. 'reduced_bloc'.
+In the pubspec.yaml add dependencies on the package 'reduced' and on the package  'reduced_bloc'.
 
 ```
 dependencies:
@@ -72,7 +76,7 @@ Import package 'reduced' to implement the logic.
 import 'package:reduced/reduced.dart';
 ```
 
-Import choosen implementation package for the 'reduced' API to use the logic, e.g.
+Import package 'reduced' to use the logic.
 
 ```dart
 import 'package:reduced_bloc/reduced_bloc.dart';
@@ -157,4 +161,4 @@ Implementations of the 'reduced' API are available for the following state manag
 
 |Framework|implementation package for 'reduced' API|
 |---|---|
-|[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc]()|
+|[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc](https://github.com/partmaster/reduced_bloc)|
