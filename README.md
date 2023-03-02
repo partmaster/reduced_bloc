@@ -5,7 +5,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/partmaster/reduced_bloc)
 # reduced_bloc
 
-Implementation of the 'reduced' API für the 'Bloc' state management framework with following features:
+Implementation of the 'reduced' API for the 'Bloc' state management framework with following features:
 
 1. Implementation of the ```Reducible``` interface 
 2. Extension on the ```BuildContext``` for convenient access to the  ```Reducible``` instance.
@@ -25,8 +25,6 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
   }
 
   @override reduce(reducer) => add(reducer);
-
-  late final reducible = this;
 }
 ```
 
@@ -43,9 +41,13 @@ extension ExtensionBlocOnBuildContext on BuildContext {
 
 ```dart
 Widget wrapWithProvider<S>({
-  required S initialState, 
+  required S initialState,
   required Widget child,
-});
+}) =>
+    BlocProvider(
+      create: (_) => ReducibleBloc(initialState),
+      child: child,
+    );
 ```
 
 #### 4. Trigger a rebuild on widgets selectively after a state change.
@@ -55,7 +57,11 @@ extension WrapWithConsumer<S> on ReducibleBloc<S> {
   Widget wrapWithConsumer<P>({
     required ReducedTransformer<S, P> transformer,
     required ReducedWidgetBuilder<P> builder,
-  });
+  }) =>
+      BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => transformer(this),
+        builder: (context, props) => builder(props: props),
+      );
 }
 ```
 
@@ -160,6 +166,7 @@ void main() => runApp(
 
 Implementations of the 'reduced' API are available for the following state management frameworks:
 
-|Framework|implementation package for 'reduced' API|
+|framework|implementation package for 'reduced' API|
 |---|---|
 |[Bloc](https://bloclibrary.dev/#/)|[reduced_bloc](https://github.com/partmaster/reduced_bloc)|
+|[Riverpod](https://riverpod.dev/)|[reduced_riverpod](https://github.com/partmaster/reduced_riverpod)|
