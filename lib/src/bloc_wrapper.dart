@@ -2,7 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reduced/reduced.dart';
+import 'package:reduced/reduced.dart'
+    show ReducedWidgetBuilder, ReducedTransformer;
 
 import 'bloc_reducible.dart';
 

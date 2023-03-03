@@ -152,7 +152,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "8a9614d15a53f292094beb3248fd56130268c90a"
+      resolved-ref: b481bd0fd5d98394bc02d0b3f4a59406c2ed81d8
       url: "https://github.com/partmaster/reduced.git"
     source: git
     version: "0.1.0"
@@ -225,5 +225,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=2.18.0 <3.0.0"
+  dart: ">=2.19.3 <3.0.0"
   flutter: ">=1.17.0"
