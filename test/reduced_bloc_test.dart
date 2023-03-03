@@ -45,8 +45,7 @@ void main() {
       child: child,
     );
     expect(objectUnderTest, isA<BlocProvider<ReducibleBloc<int>>>());
-    final provider =
-        objectUnderTest as BlocProvider<ReducibleBloc<int>>;
+    final provider = objectUnderTest as BlocProvider<ReducibleBloc<int>>;
     expect(provider.child, child);
   });
 
@@ -57,8 +56,7 @@ void main() {
       builder: ({Key? key, required int props}) => child,
       transformer: (reducible) => 1,
     );
-    expect(objectUnderTest,
-        isA<BlocSelector<ReducibleBloc<int>, int, int>>());
+    expect(objectUnderTest, isA<BlocSelector<ReducibleBloc<int>, int, int>>());
     final consumer =
         objectUnderTest as BlocSelector<ReducibleBloc<int>, int, int>;
     expect(consumer.selector(-1), 1);

@@ -15,11 +15,10 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: Builder(
-            builder: (context) =>
-                context.bloc<int>().wrapWithConsumer(
-                      transformer: transformer,
-                      builder: builder,
-                    ),
+            builder: (context) => context.bloc<int>().wrapWithConsumer(
+                  transformer: transformer,
+                  builder: builder,
+                ),
           ),
         ),
       );
