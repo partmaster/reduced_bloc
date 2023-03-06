@@ -53,16 +53,16 @@ Widget wrapWithProvider<S>({
 #### 4. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
-extension WrapWithConsumer<S> on ReducibleBloc<S> {
-  Widget wrapWithConsumer<P>({
-    required ReducedTransformer<S, P> transformer,
-    required ReducedWidgetBuilder<P> builder,
-  }) =>
-      BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => transformer(this),
+Widget wrapWithConsumer<S, P>({
+  required ReducedTransformer<S, P> transformer,
+  required ReducedWidgetBuilder<P> builder,
+}) =>
+    Builder(
+      builder: (context) => BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => transformer(context.bloc()),
         builder: (context, props) => builder(props: props),
-      );
-}
+      ),
+    );
 ```
 
 ## Getting started
@@ -141,25 +141,26 @@ Finished counter demo app using logic.dart and 'reduced_bloc' package:
 // main.dart
 
 import 'package:flutter/material.dart';
-import 'package:reduced/reduced.dart';
 import 'package:reduced_bloc/reduced_bloc.dart';
 import 'logic.dart';
 
-void main() => runApp(
-      wrapWithProvider(
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => wrapWithProvider(
         initialState: 0,
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
-          home: Builder(
-            builder: (context) =>
-                context.bloc<int>().wrapWithConsumer(
-                      transformer: transformer,
-                      builder: builder,
-                    ),
+          home: wrapWithConsumer(
+            transformer: transformer,
+            builder: builder,
           ),
         ),
-      ),
-    );
+      );
+}
 ```
 
 # Additional information

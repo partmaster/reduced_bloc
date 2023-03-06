@@ -16,13 +16,13 @@ Widget wrapWithProvider<S>({
       child: child,
     );
 
-extension WrapWithConsumer<S> on ReducibleBloc<S> {
-  Widget wrapWithConsumer<P>({
-    required ReducedTransformer<S, P> transformer,
-    required ReducedWidgetBuilder<P> builder,
-  }) =>
-      BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => transformer(this),
+Widget wrapWithConsumer<S, P>({
+  required ReducedTransformer<S, P> transformer,
+  required ReducedWidgetBuilder<P> builder,
+}) =>
+    Builder(
+      builder: (context) => BlocSelector<ReducibleBloc<S>, S, P>(
+        selector: (state) => transformer(context.bloc()),
         builder: (context, props) => builder(props: props),
-      );
-}
+      ),
+    );

@@ -50,9 +50,8 @@ void main() {
   });
 
   test('wrapWithConsumer', () {
-    final bloc = ReducibleBloc(0);
     const child = SizedBox();
-    final objectUnderTest = bloc.wrapWithConsumer(
+    final objectUnderTest = wrapWithConsumer(
       builder: ({Key? key, required int props}) => child,
       transformer: (reducible) => 1,
     );

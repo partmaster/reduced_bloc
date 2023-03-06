@@ -1,5 +1,5 @@
 name: reduced_bloc
-version: 0.1.1
+version: 0.1.0
 description: Implementation of the state management API 'reduced' on top of the state management framework 'Bloc'.
 homepage: https://github.com/partmaster/reduced_bloc
 repository: https://github.com/partmaster/reduced_bloc.git
