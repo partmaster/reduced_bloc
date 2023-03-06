@@ -45,8 +45,7 @@ void main() {
       child: child,
     );
     expect(objectUnderTest, isA<BlocProvider<ReducibleBloc<int>>>());
-    final provider =
-        objectUnderTest as BlocProvider<ReducibleBloc<int>>;
+    final provider = objectUnderTest as BlocProvider<ReducibleBloc<int>>;
     expect(provider.child, child);
   });
 
