@@ -21,8 +21,20 @@ Widget wrapWithConsumer<S, P>({
   required ReducedWidgetBuilder<P> builder,
 }) =>
     Builder(
-      builder: (context) => BlocSelector<ReducibleBloc<S>, S, P>(
-        selector: (state) => transformer(context.bloc()),
-        builder: (context, props) => builder(props: props),
+      builder: (context) => internalWrapWithConsumer(
+        transformer: transformer,
+        bloc: context.bloc<S>(),
+        builder: builder,
       ),
+    );
+
+@visibleForTesting
+BlocSelector<ReducibleBloc<S>, S, P> internalWrapWithConsumer<S, P>({
+  required ReducibleBloc<S> bloc,
+  required ReducedTransformer<S, P> transformer,
+  required ReducedWidgetBuilder<P> builder,
+}) =>
+    BlocSelector<ReducibleBloc<S>, S, P>(
+      selector: (state) => transformer(bloc),
+      builder: (context, props) => builder(props: props),
     );

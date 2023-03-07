@@ -50,16 +50,13 @@ void main() {
   });
 
   test('wrapWithConsumer', () {
-    /*
     const child = SizedBox();
-    final objectUnderTest = wrapWithConsumer(
+    final bloc = ReducibleBloc(0);
+    final objectUnderTest = internalWrapWithConsumer(
+      bloc: bloc,
       builder: ({Key? key, required int props}) => child,
       transformer: (reducible) => 1,
     );
-    expect(objectUnderTest, isA<BlocSelector<ReducibleBloc<int>, int, int>>());
-    final consumer =
-        objectUnderTest as BlocSelector<ReducibleBloc<int>, int, int>;
-    expect(consumer.selector(-1), 1);
-    */
+    expect(objectUnderTest.selector(-1), 1);
   });
 }
