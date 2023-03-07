@@ -14,7 +14,7 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(Reducible<int> reducible) => Props(
+Props transformer(ReducedStore<int> reducible) => Props(
       counterText: '${reducible.state}',
       onPressed: CallableAdapter(reducible, Incrementer()),
     );

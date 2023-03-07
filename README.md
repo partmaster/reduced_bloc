@@ -7,24 +7,24 @@
 
 Implementation of the 'reduced' API for the 'Bloc' state management framework with following features:
 
-1. Implementation of the ```Reducible``` interface 
-2. Extension on the ```BuildContext``` for convenient access to the  ```Reducible``` instance.
+1. Implementation of the ```ReducedStore``` interface 
+2. Extension on the ```BuildContext``` for convenient access to the  ```ReducedStore``` instance.
 3. Register a state for management.
 4. Trigger a rebuild on widgets selectively after a state change.
 
 ## Features
 
-#### 1. Implementation of the ```Reducible``` interface 
+#### 1. Implementation of the ```ReducedStore``` interface 
 
 ```dart
-class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
-    implements Reducible<S> {
-
-  ReducibleBloc(super.initialState) {
+class ReducedBloc<S> extends Bloc<Reducer<S>, S>
+    implements ReducedStore<S> {
+  ReducedBloc(super.initialState) {
     on<Reducer<S>>((event, emit) => emit(event(state)));
   }
 
-  @override reduce(reducer) => add(reducer);
+  @override
+  reduce(reducer) => add(reducer);
 }
 ```
 
@@ -32,51 +32,51 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S>
 
 ```dart
 extension ExtensionBlocOnBuildContext on BuildContext {
-  ReducibleBloc<S> bloc<S>() =>
-      BlocProvider.of<ReducibleBloc<S>>(this);
+  ReducedBloc<S> bloc<S>() => BlocProvider.of<ReducedBloc<S>>(this);
 }
 ```
 
 #### 3. Register a state for management.
 
 ```dart
-Widget wrapWithProvider<S>({
-  required S initialState,
-  required Widget child,
-}) =>
-    BlocProvider(
-      create: (_) => ReducibleBloc(initialState),
-      child: child,
-    );
+class ReducedProvider<S> extends StatelessWidget {
+  const ReducedProvider({
+    super.key,
+    required this.initialState,
+    required this.child,
+  });
+
+  final S initialState;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+        create: (_) => ReducedBloc(initialState),
+        child: child,
+      );
+}
 ```
 
 #### 4. Trigger a rebuild on widgets selectively after a state change.
 
 ```dart
-Widget wrapWithConsumer<S, P>({
-  required ReducedTransformer<S, P> transformer,
-  required ReducedWidgetBuilder<P> builder,
-}) =>
-    Builder(
-      builder: (context) => internalWrapWithConsumer(
-        transformer: transformer,
-        bloc: context.bloc<S>(),
-        builder: builder,
-      ),
-    );
-```
+class ReducedConsumer<S, P> extends StatelessWidget {
+  const ReducedConsumer({
+    super.key,
+    required this.transformer,
+    required this.builder,
+  });
 
-```dart 
-@visibleForTesting
-BlocSelector<ReducibleBloc<S>, S, P> internalWrapWithConsumer<S, P>({
-  required ReducibleBloc<S> bloc,
-  required ReducedTransformer<S, P> transformer,
-  required ReducedWidgetBuilder<P> builder,
-}) =>
-    BlocSelector<ReducibleBloc<S>, S, P>(
-      selector: (state) => transformer(bloc),
-      builder: (context, props) => builder(props: props),
-    );
+  final ReducedTransformer<S, P> transformer;
+  final ReducedWidgetBuilder<P> builder;
+
+  @override
+  Widget build(BuildContext context) =>
+      BlocSelector<ReducedBloc<S>, S, P>(
+        selector: (state) => transformer(context.bloc<S>()),
+        builder: (context, props) => builder(props: props),
+      );
+}
 ```
 
 ## Getting started
@@ -85,8 +85,14 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: ^0.1.0
-  reduced_bloc: ^0.1.0
+  reduced: 
+    git:
+      url: https://github.com/partmaster/reduced
+      ref: v0.2.0
+  reduced_bloc: 
+    git:
+      url: https://github.com/partmaster/reduced
+      ref: v0.2.0
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
 ```
@@ -164,11 +170,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) => wrapWithProvider(
+  Widget build(BuildContext context) => ReducedProvider(
         initialState: 0,
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
-          home: wrapWithConsumer(
+          home: const ReducedConsumer(
             transformer: transformer,
             builder: builder,
           ),

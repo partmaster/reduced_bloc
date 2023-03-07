@@ -1,13 +1,13 @@
-// bloc_reducible.dart
+// bloc_store.dart
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reduced/reduced.dart';
 
-/// Derivation of the class [Bloc] with support of the [Reducible] interface.
-class ReducibleBloc<S> extends Bloc<Reducer<S>, S> implements Reducible<S> {
+/// Derivation of the class [Bloc] with support of the [ReducedStore] interface.
+class ReducedBloc<S> extends Bloc<Reducer<S>, S> implements ReducedStore<S> {
   /// Accept events of type  [Reducer] by executing the [Reducer.call].
-  ReducibleBloc(super.initialState) {
+  ReducedBloc(super.initialState) {
     on<Reducer<S>>((event, emit) => emit(event(state)));
   }
 
@@ -16,6 +16,6 @@ class ReducibleBloc<S> extends Bloc<Reducer<S>, S> implements Reducible<S> {
 }
 
 extension ExtensionBlocOnBuildContext on BuildContext {
-  /// Convenience method for getting a [ReducibleBloc] instance.
-  ReducibleBloc<S> bloc<S>() => BlocProvider.of<ReducibleBloc<S>>(this);
+  /// Convenience method for getting a [ReducedBloc] instance.
+  ReducedBloc<S> bloc<S>() => BlocProvider.of<ReducedBloc<S>>(this);
 }

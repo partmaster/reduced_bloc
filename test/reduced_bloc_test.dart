@@ -1,6 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reduced/reduced.dart';
 
@@ -15,48 +13,26 @@ class Incrementer extends Reducer<int> {
 
 void main() {
   test('ReducibleBloc state 0', () {
-    final objectUnderTest = ReducibleBloc(0);
+    final objectUnderTest = ReducedBloc(0);
     expect(objectUnderTest.state, 0);
   });
 
   test('ReducibleBloc state 1', () {
-    final objectUnderTest = ReducibleBloc(1);
+    final objectUnderTest = ReducedBloc(1);
     expect(objectUnderTest.state, 1);
   });
 
   blocTest(
     'emits [1] when Incrementer is added',
-    build: () => ReducibleBloc(0),
-    act: (Reducible<int> bloc) => bloc.reduce(Incrementer()),
+    build: () => ReducedBloc(0),
+    act: (ReducedStore<int> bloc) => bloc.reduce(Incrementer()),
     expect: () => [1],
   );
 
   test('ReducibleBloc reduce', () async {
-    final objectUnderTest = ReducibleBloc(0);
+    final objectUnderTest = ReducedBloc(0);
     objectUnderTest.reduce(Incrementer());
     await expectLater(objectUnderTest.stream, emitsInOrder([1]));
     expect(objectUnderTest.state, 1);
-  });
-
-  test('wrapWithProvider', () {
-    const child = SizedBox();
-    final objectUnderTest = wrapWithProvider(
-      initialState: 0,
-      child: child,
-    );
-    expect(objectUnderTest, isA<BlocProvider<ReducibleBloc<int>>>());
-    final provider = objectUnderTest as BlocProvider<ReducibleBloc<int>>;
-    expect(provider.child, child);
-  });
-
-  test('wrapWithConsumer', () {
-    const child = SizedBox();
-    final bloc = ReducibleBloc(0);
-    final objectUnderTest = internalWrapWithConsumer(
-      bloc: bloc,
-      builder: ({Key? key, required int props}) => child,
-      transformer: (reducible) => 1,
-    );
-    expect(objectUnderTest.selector(-1), 1);
   });
 }
