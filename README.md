@@ -17,14 +17,13 @@ Implementation of the 'reduced' API for the 'Bloc' state management framework wi
 #### 1. Implementation of the ```ReducedStore``` interface 
 
 ```dart
-class ReducedBloc<S> extends Bloc<Reducer<S>, S>
-    implements ReducedStore<S> {
+class ReducedBloc<S> extends Bloc<Event<S>, S> implements ReducedStore<S> {
   ReducedBloc(super.initialState) {
-    on<Reducer<S>>((event, emit) => emit(event(state)));
+    on<Event<S>>((event, emit) => emit(event(state)));
   }
 
   @override
-  reduce(reducer) => add(reducer);
+  dispatch(event) => add(event);
 }
 ```
 
@@ -85,14 +84,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 
-    git:
-      url: https://github.com/partmaster/reduced
-      ref: v0.2.0
+  reduced: 0.3.2
   reduced_bloc: 
     git:
       url: https://github.com/partmaster/reduced
-      ref: v0.2.0
+      ref: v0.3.2
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
 ```
@@ -119,7 +115,8 @@ Implementation of the counter demo app logic with the 'reduced' API without furt
 import 'package:flutter/material.dart';
 import 'package:reduced/reduced.dart';
 
-class Incrementer extends Reducer<int> {
+class CounterIncremented extends Event<int> {
+  @override
   int call(int state) => state + 1;
 }
 
@@ -129,13 +126,13 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(Reducible<int> reducible) => Props(
-      counterText: '${reducible.state}',
-      onPressed: CallableAdapter(reducible, Incrementer()),
+Props transformer(ReducedStore<int> store) => Props(
+      counterText: '${store.state}',
+      onPressed: CallableAdapter(store, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(
-      appBar: AppBar(title: Text('reduced_bloc example')),
+      appBar: AppBar(title: const Text('reduced_bloc example')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +140,7 @@ Widget builder({Key? key, required Props props}) => Scaffold(
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text('${props.counterText}'),
+            Text(props.counterText),
           ],
         ),
       ),
