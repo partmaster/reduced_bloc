@@ -12,3 +12,7 @@
 ## 0.2.1
 
 * use reduced 0.2.1 from pub.dev
+
+## 0.3.0
+
+* use reduced 0.3.0 from github
