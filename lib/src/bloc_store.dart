@@ -5,14 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reduced/reduced.dart';
 
 /// Derivation of the class [Bloc] with support of the [ReducedStore] interface.
-class ReducedBloc<S> extends Bloc<Reducer<S>, S> implements ReducedStore<S> {
-  /// Accept events of type  [Reducer] by executing the [Reducer.call].
+class ReducedBloc<S> extends Bloc<Event<S>, S> implements ReducedStore<S> {
+  /// Accept events of type [Event] by executing the [Event.call].
   ReducedBloc(super.initialState) {
-    on<Reducer<S>>((event, emit) => emit(event(state)));
+    on<Event<S>>((event, emit) => emit(event(state)));
   }
 
   @override
-  reduce(reducer) => add(reducer);
+  dispatch(event) => add(event);
 }
 
 extension ExtensionBlocOnBuildContext on BuildContext {

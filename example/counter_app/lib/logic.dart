@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:reduced/reduced.dart';
 
-class Incrementer extends Reducer<int> {
+class CounterIncremented extends Event<int> {
   @override
   int call(int state) => state + 1;
 }
@@ -14,9 +14,9 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(ReducedStore<int> reducible) => Props(
-      counterText: '${reducible.state}',
-      onPressed: CallableAdapter(reducible, Incrementer()),
+Props transformer(ReducedStore<int> store) => Props(
+      counterText: '${store.state}',
+      onPressed: CallableAdapter(store, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(

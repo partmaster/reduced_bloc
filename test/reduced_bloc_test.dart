@@ -4,11 +4,9 @@ import 'package:reduced/reduced.dart';
 
 import 'package:reduced_bloc/reduced_bloc.dart';
 
-class Incrementer extends Reducer<int> {
+class CounterIncremented extends Event<int> {
   @override
-  int call(int state) {
-    return state + 1;
-  }
+  int call(int state) => state + 1;
 }
 
 void main() {
@@ -25,13 +23,13 @@ void main() {
   blocTest(
     'emits [1] when Incrementer is added',
     build: () => ReducedBloc(0),
-    act: (ReducedStore<int> bloc) => bloc.reduce(Incrementer()),
+    act: (ReducedStore<int> bloc) => bloc.dispatch(CounterIncremented()),
     expect: () => [1],
   );
 
   test('ReducibleBloc reduce', () async {
     final objectUnderTest = ReducedBloc(0);
-    objectUnderTest.reduce(Incrementer());
+    objectUnderTest.dispatch(CounterIncremented());
     await expectLater(objectUnderTest.stream, emitsInOrder([1]));
     expect(objectUnderTest.state, 1);
   });
