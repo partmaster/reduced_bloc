@@ -14,9 +14,9 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(ReducedStore<int> store) => Props(
-      counterText: '${store.state}',
-      onPressed: CallableAdapter(store, CounterIncremented()),
+Props transformer(int state, EventProcessor<int> processor) => Props(
+      counterText: '$state',
+      onPressed: EventCarrier(processor, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(

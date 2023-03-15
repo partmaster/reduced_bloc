@@ -7,23 +7,23 @@
 
 Implementation of the 'reduced' API for the 'Bloc' state management framework with following features:
 
-1. Implementation of the ```ReducedStore``` interface 
-2. Extension on the ```BuildContext``` for convenient access to the  ```ReducedStore``` instance.
+1. Implementation of the ```Store``` interface 
+2. Extension on the ```BuildContext``` for convenient access to the  ```Store``` instance.
 3. Register a state for management.
 4. Trigger a rebuild on widgets selectively after a state change.
 
 ## Features
 
-#### 1. Implementation of the ```ReducedStore``` interface 
+#### 1. Implementation of the ```Store``` interface 
 
 ```dart
-class ReducedBloc<S> extends Bloc<Event<S>, S> implements ReducedStore<S> {
+class ReducedBloc<S> extends Bloc<Event<S>, S> implements Store<S> {
   ReducedBloc(super.initialState) {
     on<Event<S>>((event, emit) => emit(event(state)));
   }
 
   @override
-  dispatch(event) => add(event);
+  process(event) => add(event);
 }
 ```
 
@@ -62,17 +62,18 @@ class ReducedProvider<S> extends StatelessWidget {
 class ReducedConsumer<S, P> extends StatelessWidget {
   const ReducedConsumer({
     super.key,
-    required this.transformer,
+    required this.mapper,
     required this.builder,
   });
 
-  final ReducedTransformer<S, P> transformer;
-  final ReducedWidgetBuilder<P> builder;
+  final StateToPropsMapper<S, P> mapper;
+  final WidgetFromPropsBuilder<P> builder;
 
   @override
-  Widget build(BuildContext context) =>
-      BlocSelector<ReducedBloc<S>, S, P>(
-        selector: (state) => transformer(context.bloc<S>()),
+  Widget build(BuildContext context) => _build(context.bloc());
+
+  Widget _build(Store<S> store) => BlocSelector<ReducedBloc<S>, S, P>(
+        selector: (state) => mapper(store.state, store),
         builder: (context, props) => builder(props: props),
       );
 }
@@ -84,11 +85,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 0.3.2
+  reduced: 0.4.0
   reduced_bloc: 
     git:
       url: https://github.com/partmaster/reduced
-      ref: v0.3.2
+      ref: v0.4.0-beta.1
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
 ```
@@ -126,9 +127,9 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(ReducedStore<int> store) => Props(
-      counterText: '${store.state}',
-      onPressed: CallableAdapter(store, CounterIncremented()),
+Props transformer(int state, EventProcessor<int> processor) => Props(
+      counterText: '$state',
+      onPressed: EventCarrier(processor, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(
@@ -172,7 +173,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(primarySwatch: Colors.blue),
           home: const ReducedConsumer(
-            transformer: transformer,
+            mapper: transformer,
             builder: builder,
           ),
         ),

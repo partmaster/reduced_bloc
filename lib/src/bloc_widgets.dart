@@ -26,16 +26,18 @@ class ReducedProvider<S> extends StatelessWidget {
 class ReducedConsumer<S, P> extends StatelessWidget {
   const ReducedConsumer({
     super.key,
-    required this.transformer,
+    required this.mapper,
     required this.builder,
   });
 
-  final ReducedTransformer<S, P> transformer;
-  final ReducedWidgetBuilder<P> builder;
+  final StateToPropsMapper<S, P> mapper;
+  final WidgetFromPropsBuilder<P> builder;
 
   @override
-  Widget build(BuildContext context) => BlocSelector<ReducedBloc<S>, S, P>(
-        selector: (state) => transformer(context.bloc<S>()),
+  Widget build(BuildContext context) => _build(context.bloc());
+
+  Widget _build(Store<S> store) => BlocSelector<ReducedBloc<S>, S, P>(
+        selector: (state) => mapper(store.state, store),
         builder: (context, props) => builder(props: props),
       );
 }

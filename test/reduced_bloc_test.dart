@@ -23,13 +23,13 @@ void main() {
   blocTest(
     'emits [1] when Incrementer is added',
     build: () => ReducedBloc(0),
-    act: (ReducedStore<int> bloc) => bloc.dispatch(CounterIncremented()),
+    act: (Store<int> bloc) => bloc.process(CounterIncremented()),
     expect: () => [1],
   );
 
   test('ReducibleBloc reduce', () async {
     final objectUnderTest = ReducedBloc(0);
-    objectUnderTest.dispatch(CounterIncremented());
+    objectUnderTest.process(CounterIncremented());
     await expectLater(objectUnderTest.stream, emitsInOrder([1]));
     expect(objectUnderTest.state, 1);
   });
