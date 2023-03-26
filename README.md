@@ -85,11 +85,11 @@ In the pubspec.yaml add dependencies on the package 'reduced' and on the package
 
 ```
 dependencies:
-  reduced: 0.4.0
+  reduced: 0.5.0
   reduced_bloc: 
     git:
       url: https://github.com/partmaster/reduced
-      ref: v0.4.0-beta.1
+      ref: v0.5.0
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2
 ```
@@ -113,7 +113,7 @@ Implementation of the counter demo app logic with the 'reduced' API without furt
 ```dart
 // logic.dart
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:reduced/reduced.dart';
 
 class CounterIncremented extends Event<int> {
@@ -129,7 +129,7 @@ class Props {
 
 Props transformer(int state, EventProcessor<int> processor) => Props(
       counterText: '$state',
-      onPressed: EventCarrier(processor, CounterIncremented()),
+      onPressed: Action(processor, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(
