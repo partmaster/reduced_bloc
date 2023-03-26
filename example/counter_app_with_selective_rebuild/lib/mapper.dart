@@ -3,7 +3,7 @@
 import 'package:reduced/reduced.dart';
 
 import 'props.dart';
-import 'events.dart';
+import 'event.dart';
 import 'state.dart';
 
 class MyHomePagePropsMapper extends MyHomePageProps {
@@ -11,7 +11,7 @@ class MyHomePagePropsMapper extends MyHomePageProps {
     MyAppState state,
     EventProcessor<MyAppState> processor,
   ) : super(
-          onPressed: EventCarrier(processor, CounterIncremented.instance),
+          onPressed: Action(processor, CounterIncremented.instance),
           title: state.title,
         );
 }

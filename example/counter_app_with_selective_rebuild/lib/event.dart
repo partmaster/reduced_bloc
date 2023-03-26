@@ -1,4 +1,4 @@
-// events.dart
+// event.dart
 
 import 'package:reduced/reduced.dart';
 
