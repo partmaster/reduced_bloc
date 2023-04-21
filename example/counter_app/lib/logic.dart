@@ -14,9 +14,9 @@ class Props {
   final Callable<void> onPressed;
 }
 
-Props transformer(int state, EventProcessor<int> processor) => Props(
-      counterText: '$state',
-      onPressed: Action(processor, CounterIncremented()),
+Props transformer(StoreSnapshot<int> snapshot, String? routeName) => Props(
+      counterText: '${snapshot.state}',
+      onPressed: Command(snapshot.processor, CounterIncremented()),
     );
 
 Widget builder({Key? key, required Props props}) => Scaffold(

@@ -13,6 +13,9 @@ class ReducedBloc<S> extends Bloc<Event<S>, S> implements Store<S> {
 
   @override
   process(event) => add(event);
+
+  @override
+  StoreSnapshot<S> get snapshot => StoreSnapshot(state, this);
 }
 
 extension ExtensionBlocOnBuildContext on BuildContext {

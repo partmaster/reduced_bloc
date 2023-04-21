@@ -30,14 +30,14 @@ class ReducedConsumer<S, P> extends StatelessWidget {
     required this.builder,
   });
 
-  final StateToPropsMapper<S, P> mapper;
+  final SnapshotToPropsMapper<S, P> mapper;
   final WidgetFromPropsBuilder<P> builder;
 
   @override
   Widget build(BuildContext context) => _build(context.bloc());
 
   Widget _build(Store<S> store) => BlocSelector<ReducedBloc<S>, S, P>(
-        selector: (state) => mapper(store.state, store),
+        selector: (state) => mapper(store.snapshot, null),
         builder: (context, props) => builder(props: props),
       );
 }
